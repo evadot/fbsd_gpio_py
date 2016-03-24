@@ -15,15 +15,18 @@ The fbsd_gpio module expose two classes, GpioController and GpioPin
 Use gpio controller unit 0 (/dev/gpioc0) and list all the pins name:
 
 .. code-block:: python
-    from fbsd_gpio import GpioController
 
-    gpioc = GpioController(0)
-    for pin in gpioc:
-        print(pin)
-    gpioc.close()
+   from fbsd_gpio import GpioController
+
+   gpioc = GpioController(0)
+   for pin in gpioc:
+       print(pin)
+   gpioc.close()
 
 Set pin 127 to output and logical value 1
+
 .. code-block:: python
+
    from fbsd_gpio import GpioController, GPIO_VALUE_HIGH
 
    gpioc = GpioController(0)
@@ -34,7 +37,9 @@ Set pin 127 to output and logical value 1
    gpioc.close()
 
 Alternativelly you can use the GpioPin class:
+
 .. code-block:: python
+
    from fbsd_gpio import GpioPin, GPIO_VALUE_HIGH
 
    pin = GpioPin(127, unit=0)
@@ -45,7 +50,9 @@ Alternativelly you can use the GpioPin class:
    pin(GPIO_VALUE_HIGH)
 
 Or use the name of the pin directly:
+
 .. code-block:: python
+
    from fbsd_gpio import GpioController, GPIO_VALUE_HIGH
 
    gpioc = GpioController(0)
@@ -57,7 +64,9 @@ Or use the name of the pin directly:
    gpioc.close()
 
 Get the value of a pin:
+
 .. code-block:: python
+
    from fbsd_gpio import GpioPin
 
    pin = GpioPin(128, unit=0)
@@ -70,14 +79,18 @@ Get the value of a pin:
        value = pin()
 
 Toggle the value of a pin:
+
 .. code-block:: python
+
    from fbsd_gpio import GpioPin
 
    pin = GpioPin(128, unit=0)
    pin.toggle()
 
 Change the name of a pin:
+
 .. code-block:: python
+
    from fbsd_gpio import GpioPin
 
    pin = GpioPin(128, unit=0)
