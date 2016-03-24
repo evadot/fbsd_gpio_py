@@ -15,6 +15,9 @@ class GpioController(object):
                 self._handle = None
                 self._unit = unit
 
+        def __del__(self):
+                self.close()
+
         def __repr__(self):
                 return self._desc
 
