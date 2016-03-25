@@ -14,7 +14,7 @@ Python package on FreeBSD 11 have problem when using python source that needed t
 
 .. code-block:: shell
 
-pip install --only-binary freebsd-11 fbsd_gpio
+    pip install --only-binary freebsd-11 fbsd_gpio
 
 How to use
 ----------
