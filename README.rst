@@ -21,7 +21,6 @@ Use gpio controller unit 0 (/dev/gpioc0) and list all the pins name:
    gpioc = GpioController(0)
    for pin in gpioc:
        print(pin)
-   gpioc.close()
 
 Set pin 127 to output and logical value 1
 
@@ -34,7 +33,6 @@ Set pin 127 to output and logical value 1
    # The two following lines are equivalent
    gpioc.pin_set(127, GPIO_VALUE_HIGH)
    gpioc.pin_high(127)
-   gpioc.close()
 
 Alternativelly you can use the GpioPin class:
 
@@ -61,7 +59,6 @@ Or use the name of the pin directly:
    gpioc.gpioled.set(GPIO_VALUE_HIGH)
    gpioc.gpioled0.high()
    gpioc.gpioled0(GPIO_VALUE_HIGH)
-   gpioc.close()
 
 Get the value of a pin:
 
