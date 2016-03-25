@@ -13,6 +13,7 @@ How to install
 Python package on FreeBSD 11 have problem when using python source that needed to compile thing, so the easiest way is to use the binary packages uploaded to pypi:
 
 .. code-block:: shell
+
 pip install --only-binary freebsd-11 fbsd_gpio
 
 How to use
