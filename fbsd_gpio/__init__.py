@@ -3,6 +3,8 @@ from sysctl import filter as sysctl
 
 from .constant import *
 
+GPIOCONTROLLERPOOL= {}
+
 class GpioController(object):
         def __init__(self, unit):
                 """GpioController __init__
@@ -42,28 +44,39 @@ class GpioController(object):
         def open(self):
                 """Obtain an handle for the gpio controller
                 """
-                if self._handle is not None:
-                        return
-                self._handle = _gpio.gpio_open(self._unit)
-                if self._handle == -1:
-                        raise IOError
+                try:
+                        if GPIOCONTROLLERPOOL[self._unit]['handle'] != -1:
+                                GPIOCONTROLLERPOOL[self._unit]['ref'] = GPIOCONTROLLERPOOL[self._unit]['ref'] + 1
+                                return
+                except KeyError:
+                        GPIOCONTROLLERPOOL[self._unit] = {}
+                        GPIOCONTROLLERPOOL[self._unit]['handle'] = _gpio.gpio_open(self._unit)
+                        if GPIOCONTROLLERPOOL[self._unit]['handle'] == -1:
+                                del GPIOCONTROLLERPOOL[self._unit]
+                                raise IOError
+                        GPIOCONTROLLERPOOL[self._unit]['ref'] = 1
 
         def close(self):
                 """Close the handle for the gpio controller
                 """
-                if self._handle is None:
-                        return
-                _gpio.gpio_close(self._handle)
-                self._handle = None
+                try:
+                        GPIOCONTROLLERPOOL[self._unit]['ref'] = GPIOCONTROLLERPOOL[self._unit]['ref'] - 1
+                        if GPIOCONTROLLERPOOL[self._unit]['ref'] == 0:
+                                _gpio.gpio_close(GPIOCONTROLLERPOOL[self._unit]['handle'])
+                                del GPIOCONTROLLERPOOL[self._unit]
+                except KeyError:
+                        pass
 
         @property
         def handle(self):
                 """The handle for the gpio controller
                 :returns: The handle
                 """
-                if self._handle is None:
+                try:
+                        return GPIOCONTROLLERPOOL[self._unit]['handle']
+                except KeyError:
                         self.open()
-                return self._handle
+                        return GPIOCONTROLLERPOOL[self._unit]['handle']
 
         @property
         def description(self):
