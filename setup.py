@@ -13,7 +13,7 @@ setup(
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
-        'Operating System :: POSIX :: BSD :: FreeBSD'
+        'Operating System :: POSIX :: BSD :: FreeBSD',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
