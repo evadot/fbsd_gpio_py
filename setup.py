@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='fbsd_gpio',
-    version='0.3.0',
+    version='0.4.0',
     url='https://github.com/evadot/fbsd_gpio_py',
     license='BSD',
     author='Emmanuel Vadot',
