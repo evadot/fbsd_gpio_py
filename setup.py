@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='fbsd_gpio',
-    version='0.4.0',
+    version='0.4.1',
     url='https://github.com/evadot/fbsd_gpio_py',
     license='BSD',
     author='Emmanuel Vadot',
@@ -10,7 +10,7 @@ setup(
     description='cffi-based Python bindings for FreeBSD GPIO',
     long_description=open('README.rst').read(),
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: POSIX :: BSD :: FreeBSD',
