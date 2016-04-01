@@ -102,7 +102,7 @@ class GpioController(object):
 
                 flags = []
                 for cap in GPIO_CAPS:
-                        if pin_cfg.g_caps & cap:
+                        if pin_cfg.g_flags & cap:
                                 flags.append(cap)
 
                 return caps, flags, ffi.string(pin_cfg.g_name)
@@ -122,6 +122,17 @@ class GpioController(object):
                 """
 
                 return self.pin_get_config(pin)[1]
+
+        def pin_set_flags(self, pin, flags):
+                """Set pin configuration flags
+                :param pin: The pin number
+                :param flags: The pin flags
+                """
+                pin_cfg = ffi.new('gpio_config_t *')
+                pin_cfg.g_pin = pin
+                pin_cfg.g_flags = flags
+                if _gpio.gpio_pin_set_flags(self.handle, pin_cfg) != 0:
+                        raise ValueError
 
         def pin_set_name(self, pin, name):
                 """Set the name of the pin
@@ -224,8 +235,6 @@ class GpioPin(object):
                 if not self._controller:
                         raise ValueError
 
-                self._caps, self._flags, self._name = self._controller.pin_get_config(self._num)
-
         def __repr__(self):
                 """Return the name as the representation
                 """
@@ -243,7 +252,7 @@ class GpioPin(object):
         def name(self):
                 """Return the name of the pin
                 """
-                return self._name
+                return self._controller.pin_get_config(self._num)[2]
 
         @name.setter
         def name(self, name):
@@ -251,7 +260,6 @@ class GpioPin(object):
                 :param name: The name
                 """
                 self._controller.pin_set_name(self._num, name)
-                self._name = name
 
         @property
         def input(self):
@@ -302,6 +310,12 @@ class GpioPin(object):
                 """
 
                 return self._controller.pin_get_flags(self._num)
+
+        @caps.setter
+        def flags(self, flags):
+                """Set the pin configuration flags
+                """
+                self._controller.pin_set_flags(self._num, flags)
 
         def low(self):
                 """Set the pin to low
