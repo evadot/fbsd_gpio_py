@@ -2,7 +2,9 @@ from _fbsd_gpio import ffi, lib as _gpio
 
 from .constant import *
 
-GPIOCONTROLLERPOOL= {}
+
+GPIOCONTROLLERPOOL = {}
+
 
 class GpioController(object):
         def __init__(self, unit):
@@ -259,7 +261,7 @@ class GpioPin(object):
                 """Set the pin mode to input
                 :param input: True to set it to input, False to set it to output
                 """
-                if input == True:
+                if input:
                         self._controller.pin_input(self._num)
                 else:
                         self._controller.pin_output(self._num)
@@ -277,7 +279,7 @@ class GpioPin(object):
                 """Set the pin mode to output
                 :param output: True to set it to output, False to set it to input
                 """
-                if output == True:
+                if output:
                         self._controller.pin_output(self._num)
                 else:
                         self._controller.pin_input(self._num)
@@ -296,7 +298,7 @@ class GpioPin(object):
 
                 return self._controller.pin_get_flags(self._num)
 
-        @caps.setter
+        @flags.setter
         def flags(self, flags):
                 """Set the pin configuration flags
                 """
