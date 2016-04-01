@@ -1,3 +1,6 @@
+#
+# Pin caps/flags
+#
 GPIO_PIN_INPUT = 0x1
 GPIO_PIN_OUTPUT = 0x2
 GPIO_PIN_OPENDRAIN = 0x4
@@ -9,6 +12,20 @@ GPIO_PIN_INVIN = 0x80
 GPIO_PIN_INVOUT = 0x100
 GPIO_PIN_PULSTATE = 0x200
 
+GPIO_CAPS = [GPIO_PIN_INPUT,
+             GPIO_PIN_OUTPUT,
+             GPIO_PIN_OPENDRAIN,
+             GPIO_PIN_PUSHPULL,
+             GPIO_PIN_TRISTATE,
+             GPIO_PIN_PULLUP,
+             GPIO_PIN_PULLDOWN,
+             GPIO_PIN_INVIN,
+             GPIO_PIN_INVOUT,
+             GPIO_PIN_PULSTATE]
+
+#
+# Pin Values
+#
 GPIO_VALUE_LOW = 0
 GPIO_VALUE_HIGH = 1
 

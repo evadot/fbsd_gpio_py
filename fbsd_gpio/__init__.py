@@ -94,7 +94,34 @@ class GpioController(object):
                 pin_cfg.g_pin = pin
                 if _gpio.gpio_pin_config(self.handle, pin_cfg) != 0:
                         raise ValueError
-                return pin_cfg.g_caps, pin_cfg.g_flags, ffi.string(pin_cfg.g_name)
+
+                caps = []
+                for cap in GPIO_CAPS:
+                        if pin_cfg.g_caps & cap:
+                                caps.append(cap)
+
+                flags = []
+                for cap in GPIO_CAPS:
+                        if pin_cfg.g_caps & cap:
+                                flags.append(cap)
+
+                return caps, flags, ffi.string(pin_cfg.g_name)
+
+        def pin_get_caps(self, pin):
+                """Get the pin capabilities
+                :param pin: The pin number
+                :returns: The capabilities
+                """
+
+                return self.pin_get_config(pin)[0]
+
+        def pin_get_flags(self, pin):
+                """Get the pin current settings
+                :param pin: The pin number
+                :returns: The settings
+                """
+
+                return self.pin_get_config(pin)[1]
 
         def pin_set_name(self, pin, name):
                 """Set the name of the pin
@@ -261,6 +288,20 @@ class GpioPin(object):
                         self._controller.pin_output(self._num)
                 else:
                         self._controller.pin_input(self._num)
+
+        @property
+        def caps(self):
+                """Returns the pin capabilities
+                """
+
+                return self._controller.pin_get_caps(self._num)
+
+        @property
+        def flags(self):
+                """Returns the pin configuration flags
+                """
+
+                return self._controller.pin_get_flags(self._num)
 
         def low(self):
                 """Set the pin to low
