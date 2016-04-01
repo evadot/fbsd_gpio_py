@@ -1,5 +1,4 @@
 from _fbsd_gpio import ffi, lib as _gpio
-from sysctl import filter as sysctl
 
 from .constant import *
 
@@ -10,18 +9,11 @@ class GpioController(object):
                 """GpioController __init__
                 :param: unit The GPIO controller unit to operate on
                 """
-                try:
-                        self._desc = sysctl('dev.gpio.{0}.%desc'.format(unit))[0].value
-                except IndexError:
-                        raise IOError
                 self._handle = None
                 self._unit = unit
 
         def __del__(self):
                 self.close()
-
-        def __repr__(self):
-                return self._desc
 
         def __getattr__(self, pinname):
                 """Magic method to obtain a GpioPin by it's name
@@ -77,13 +69,6 @@ class GpioController(object):
                 except KeyError:
                         self.open()
                         return GPIOCONTROLLERPOOL[self._unit]['handle']
-
-        @property
-        def description(self):
-                """Device description of the gpio controller
-                :returns: The description
-                """
-                return self._desc
 
         def pin_get_config(self, pin):
                 """Get the pin configuration

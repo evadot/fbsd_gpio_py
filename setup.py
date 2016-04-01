@@ -25,5 +25,5 @@ setup(
     packages=['fbsd_gpio'],
     setup_requires=["cffi>=1.0.0"],
     cffi_modules=["generate.py:ffi"],
-    install_requires=['cffi','sysctl'],
+    install_requires=['cffi'],
 )
