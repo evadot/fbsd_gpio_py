@@ -206,6 +206,27 @@ class GpioController(object):
                 """
                 return GpioPin(num, controller=self)
 
+        def wait_for_event(self, pin, event, poll=0.1):
+                """Blocking function to wait for a event
+                :param pin: The pin number
+                :param event: The event to wait for
+                :param poll: THe time between checks
+                """
+
+                if event not in GPIO_EVENTS:
+                        raise ValueError
+
+                from time import sleep
+
+                value = self.pin_get(pin)
+                while True:
+                        sleep(poll)
+                        newvalue = self.pin_get(pin)
+                        if newvalue != value:
+                                if newvalue == event:
+                                        return
+                                value = newvalue
+
 
 class GpioPin(object):
         def __init__(self, num, unit=None, controller=None):
@@ -329,3 +350,10 @@ class GpioPin(object):
                 """Get the pin value
                 """
                 return self._controller.pin_get(self._num)
+
+        def wait_for_event(self, event, poll=0.1):
+                """Block until event
+                :param event: The event to wait for
+                :param poll: The time between checks
+                """
+                return self._controller.wait_for_event(self._num, event, poll=poll)
