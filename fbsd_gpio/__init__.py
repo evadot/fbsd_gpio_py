@@ -225,7 +225,7 @@ class GpioPin(object):
         def __repr__(self):
                 """Return the name as the representation
                 """
-                return self._name
+                return self.name()
 
         def __call__(self, value=None):
                 """Set or get the value of the pin
