@@ -361,5 +361,6 @@ class GpioPin(object):
                 """Block until event
                 :param events: The events to wait for
                 :param poll: The time between checks
+                :returns: The triggered event
                 """
                 return self._controller.wait_for_event(self._num, events, poll=poll)
