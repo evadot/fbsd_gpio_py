@@ -224,14 +224,14 @@ class GpioController(object):
                 while True:
                         sleep(poll)
                         newvalue = self.pin_get(pin)
-                        if newvalue != value:
-                                if value == GPIO_VALUE_LOW and newvalue == GPIO_VALUE_HIGH:
-                                        event = GPIO_EVENT_RISING
-                                elif value == GPIO_VALUE_HIGH and newvalue == GPIO_VALUE_LOW:
-                                        event = GPIO_EVENT_FALLING
-                                if event in events:
-                                        return event
-                                value = newvalue
+                        event = 0
+                        if value == GPIO_VALUE_LOW and newvalue == GPIO_VALUE_HIGH:
+                                event = GPIO_EVENT_RISING
+                        elif value == GPIO_VALUE_HIGH and newvalue == GPIO_VALUE_LOW:
+                                event = GPIO_EVENT_FALLING
+                        if event in events:
+                                return event
+                        value = newvalue
 
 
 class GpioPin(object):
