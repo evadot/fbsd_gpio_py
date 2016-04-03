@@ -206,15 +206,17 @@ class GpioController(object):
                 """
                 return GpioPin(num, controller=self)
 
-        def wait_for_event(self, pin, event, poll=0.1):
+        def wait_for_event(self, pin, events, poll=0.1):
                 """Blocking function to wait for a event
                 :param pin: The pin number
-                :param event: The event to wait for
+                :param events: The events to wait for
                 :param poll: THe time between checks
+                :returns: The triggered event
                 """
 
-                if event not in GPIO_EVENTS:
-                        raise ValueError
+                for event in events:
+                        if event not in GPIO_EVENTS:
+                                raise ValueError
 
                 from time import sleep
 
@@ -223,8 +225,12 @@ class GpioController(object):
                         sleep(poll)
                         newvalue = self.pin_get(pin)
                         if newvalue != value:
-                                if newvalue == event:
-                                        return
+                                if value == GPIO_VALUE_LOW and newvalue == GPIO_VALUE_HIGH:
+                                        event = GPIO_EVENT_RISING
+                                elif value == GPIO_VALUE_HIGH and newvalue == GPIO_VALUE_LOW:
+                                        event = GPIO_EVENT_FALLING
+                                if event in events:
+                                        return event
                                 value = newvalue
 
 
@@ -351,9 +357,9 @@ class GpioPin(object):
                 """
                 return self._controller.pin_get(self._num)
 
-        def wait_for_event(self, event, poll=0.1):
+        def wait_for_event(self, events, poll=0.1):
                 """Block until event
-                :param event: The event to wait for
+                :param events: The events to wait for
                 :param poll: The time between checks
                 """
-                return self._controller.wait_for_event(self._num, event, poll=poll)
+                return self._controller.wait_for_event(self._num, events, poll=poll)
