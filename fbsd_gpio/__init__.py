@@ -72,7 +72,7 @@ class GpioController(object):
                         self.open()
                         return GPIOCONTROLLERPOOL[self._unit]['handle']
 
-        def pin_get_config(self, pin):
+        def pin_config(self, pin):
                 """Get the pin configuration
                 :param pin: The pin number
                 :returns: The capabilities, flags and name
@@ -92,7 +92,7 @@ class GpioController(object):
                         if pin_cfg.g_flags & cap:
                                 flags.append(cap)
 
-                return caps, flags, ffi.string(pin_cfg.g_name)
+                return caps, flags, ffi.string(pin_cfg.g_name).decode('utf8')
 
         def pin_get_caps(self, pin):
                 """Get the pin capabilities
@@ -100,7 +100,7 @@ class GpioController(object):
                 :returns: The capabilities
                 """
 
-                return self.pin_get_config(pin)[0]
+                return self.pin_config(pin)[0]
 
         def pin_get_flags(self, pin):
                 """Get the pin current settings
@@ -108,7 +108,7 @@ class GpioController(object):
                 :returns: The settings
                 """
 
-                return self.pin_get_config(pin)[1]
+                return self.pin_config(pin)[1]
 
         def pin_set_flags(self, pin, flags):
                 """Set pin configuration flags
@@ -206,6 +206,17 @@ class GpioController(object):
                 """
                 return GpioPin(num, controller=self)
 
+        def pin_exists(self, num):
+                """Test if a pin exists in the gpio controller
+                :param num: THe pin number
+                """
+
+                try:
+                        self.pin_config(num)
+                except ValueError:
+                        return False
+                return True
+
         def wait_for_event(self, pin, events, poll=0.1):
                 """Blocking function to wait for a event
                 :param pin: The pin number
@@ -249,6 +260,9 @@ class GpioPin(object):
                 if not self._controller:
                         raise ValueError
 
+                if self._controller.pin_exists(num) == False:
+                        raise ValueError
+
         def __repr__(self):
                 """Return the name as the representation
                 """
@@ -266,7 +280,7 @@ class GpioPin(object):
         def name(self):
                 """Return the name of the pin
                 """
-                return self._controller.pin_get_config(self._num)[2]
+                return self._controller.pin_config(self._num)[2]
 
         @name.setter
         def name(self, name):
