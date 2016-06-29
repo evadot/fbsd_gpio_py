@@ -293,7 +293,7 @@ class GpioPin(object):
         def input(self):
                 """Returns True if the pin is in input mode
                 """
-                if self._flags & GPIO_PIN_INPUT:
+                if GPIO_PIN_INPUT in self.flags:
                         return True
                 return False
 
@@ -311,7 +311,7 @@ class GpioPin(object):
         def output(self):
                 """Returns True if the pin is in output mode
                 """
-                if self._flags & GPIO_PIN_OUTPUT:
+                if GPIO_PIN_OUTPUT in self.flags:
                         return True
                 return False
 
