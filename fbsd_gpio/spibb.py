@@ -14,10 +14,10 @@ SPI_MODE_CPOL_CPHA = 3
 
 class GpioSPIBB(object):
     def __init__(self, sclk, mosi, miso, ss, mode=0):
-        self._sclk = GpioPin(sclk, unit=0)
-        self._mosi = GpioPin(mosi, unit=0)
-        self._miso = GpioPin(miso, unit=0)
-        self._ss = GpioPin(ss, unit=0)
+        self._sclk = GpioPin(sclk[1], unit=sclk[0])
+        self._mosi = GpioPin(mosi[1], unit=mosi[0])
+        self._miso = GpioPin(miso[1], unit=miso[0])
+        self._ss = GpioPin(ss[1], unit=ss[0])
 
         self._sclk.output = True
         self._sclk.flags = GPIO_PIN_PULLDOWN
