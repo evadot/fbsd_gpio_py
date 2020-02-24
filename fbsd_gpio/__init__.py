@@ -272,9 +272,11 @@ class GpioPin(object):
                 """Set or get the value of the pin
                 :param value: If set, set the value of the pin
                 """
-                if value:
+                if value is None:
+                        return self._controller.pin_get(self._num)
+                else:
                         self._controller.pin_set(self._num, value)
-                return self._controller.pin_get(self._num)
+                
 
         @property
         def name(self):
